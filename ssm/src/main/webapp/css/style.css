@@ -7,7 +7,7 @@
 }
 /* =======================================================
 *
-* 	Template Style 
+* 	Template Style
 *
 * ======================================================= */
 body {
@@ -643,6 +643,7 @@ h1, h2, h3, h4, h5, h6, figure {
 
 #fh5co-blog .fh5co-post {
   background: #fff;
+  min-height : 360px;
   float: left;
   width: 100%;
   margin-bottom: 30px;
