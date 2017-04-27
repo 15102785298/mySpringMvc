@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tantian.model.Person;
 import com.tantian.service.IBlogService;
 import com.tantian.service.IPersonService;
@@ -30,7 +31,8 @@ public class BlogAction {
 		String filePath = "F:\\myBlog";
 
 		List<Map<String,String>> res = iblogService.getBlogMsg(0, 1);
-		model.put("data" , res);
+		Object obj = JSONObject.toJSON(res);
+		model.put("data" , obj);
 		return "/blog.jsp";
 	}
 
