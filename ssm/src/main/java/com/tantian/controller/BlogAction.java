@@ -27,8 +27,6 @@ public class BlogAction {
 	@RequestMapping("/blog.do")
 	public String showPersons(ModelMap model) {
 
-		FileUtils fileUtils = new FileUtils();
-		String filePath = "F:\\myBlog";
 
 		List<Map<String,String>> res = iblogService.getBlogMsg(0, 1);
 		Object obj = JSONObject.toJSON(res);
@@ -36,11 +34,4 @@ public class BlogAction {
 		return "/blog.jsp";
 	}
 
-	@RequestMapping("/videoPlay.do")
-	public ModelAndView t(Model model) {
-
-		ModelAndView view = new ModelAndView("/view/pub/videoPlay.html");
-		model.addAttribute("introSelf", "I'm Spring, I'm Coming.");
-		return view;
-	}
 }

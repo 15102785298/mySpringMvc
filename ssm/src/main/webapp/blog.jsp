@@ -84,7 +84,7 @@
 								</ul></li>
 
 							<li><a href="work.html">作品</a></li>
-							<li class="active"><a href="blog.html">博客</a></li>
+							<li class="active"><a href="http://localhost/ssm/blog.do">博客</a></li>
 						</ul>
 					</div>
 				</div>
@@ -129,14 +129,14 @@
 				var responseHtml = "";
 				for(var i =0;i<data_in.length;i++){
 				 responseHtml =responseHtml + '<div class="row">'+
-					'<div class="div-hight col-md-4 col-sm-4 animate-box"'+
+					'<div class=" col-md-4 col-sm-4 animate-box"'+
 						'data-animate-effect="fadeInUp">'+
 						'<div class="fh5co-post">'+
 							'<span class="fh5co-date">'+
-							data_in[i].blog_date+
+							data_in[i].blog_edit_time+
 							'</span>'+
 							'<h4>'+
-							'	<a href="#">'+data_in[i].blog_title+'</a>'+
+							'	<a href="#">'+data_in[i].blog_name+'</a>'+
 							'</h4>'+
 							'<p>'+data_in[i].blog_content+'</p>'+
 							'<p class="author">'+
@@ -179,19 +179,18 @@
 			<div class="container">
 				<div class="row animate-box">
 					<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-						<span>Let's work together</span>
-						<h2>Start Your Project</h2>
-						<p>Dignissimos asperiores vitae velit veniam totam fuga
-							molestias accusamus alias autem provident. Odit ab aliquam dolor
-							eius.</p>
+						<span>Let's Go</span>
+						<h2>To Be Better</h2>
+						<p>Cease to struggle and you cease to live.</p>
 						<p>
-							<button type="submit" class="btn btn-default">Get In
-								Touch</button>
+							<button type="submit" class="btn btn-default">Back To
+								Home</button>
 						</p>
 					</div>
 				</div>
 			</div>
 		</div>
+
 
 		<footer id="fh5co-footer" role="contentinfo">
 			<div class="container">

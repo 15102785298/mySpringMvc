@@ -14,36 +14,21 @@ import com.tantian.utils.FileUtils;
 
 @Service("blogService")
 public class BlogServiceImpl implements IBlogService {
-	List<String> name;
-	Map<String, String> data;
-	FileUtils fileUtils;
 
+	public static List<Map<String, String>> blog_data;
 	public BlogServiceImpl() {
-		fileUtils = new FileUtils();
+		FileUtils fileUtils = new FileUtils();
 		String filePath = "F:\\myBlog";
-		this.name = fileUtils.getAllFileName(filePath);
-		this.data = fileUtils.getAllFile(filePath);
+		this.blog_data = fileUtils.getAllFileInfo(filePath);
 	}
 
 	public List<Map<String, String>> getBlogMsg(int begin, int end) {
 		List<Map<String, String>> resList = new ArrayList<Map<String,String>>();
-
 		for (int i = begin; i <= end; i++) {
-			Map<String, String> resMap = new HashMap<String, String>();
-			resMap.put("blog_date", fileUtils.getCreateTime(name.get(i)));
-			try {
-				resMap.put("blog_content", fileUtils.readFileBegin(name.get(i)));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			resMap.put("blog_title", fileUtils.getShowName(name.get(i)));
+			Map<String, String> resMap = blog_data.get(i);
 			resList.add(resMap);
 		}
 		return resList;
 	}
 
-	private String getShowName(String fileName) {
-		return fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.indexOf("."));
-	}
 }

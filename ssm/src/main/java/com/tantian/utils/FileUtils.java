@@ -11,6 +11,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class FileUtils {
 	 * @author tantian 通过文件路径读取该文件夹下所有文件的文件名
 	 */
 	public List<String> getAllFileName(String filePath) {
-		Vector<String> vector = new Vector<String>();
+		List<String> vector = new ArrayList<String>();
 		File[] files = new File(filePath).listFiles();
 		int len = files.length;
 		for (int i = 0; i < len; i++) {
@@ -41,6 +42,71 @@ public class FileUtils {
 				vector.add(tmp); // 如果是文件，则直接输出文件名到指定的文件。
 		}
 		return vector;
+	}
+
+	/***
+	 * @author tantian 通过文件路径读取该文件夹下所有的文件的内容
+	 */
+	public List<String> getAllFileShowContent(String filePath) {
+		List<String> result = new ArrayList<String>();
+		File[] files = new File(filePath).listFiles();
+		int len = files.length;
+		for (int i = 0; i < len; i++) {
+			String tmp = files[i].getAbsolutePath();
+			if (files[i].isDirectory())
+				System.out.println("包含文件夹：\"" + files[i].getAbsolutePath() + "\"请查看！");
+			else
+				result.add(readFileBegin(tmp)); // 如果是文件，则直接输出文件名到指定的文件。
+		}
+		return result;
+
+	}
+
+	/***
+	 * @author tantian 通过文件完整路径读取显示文件名
+	 */
+	public List<String> getAllFileShowName(List<String> filePathList) {
+		List<String> res = new ArrayList<String>();
+		int len = filePathList.size();
+		for (int i = 0; i < len; i++) {
+			res.add(getShowName(filePathList.get(i))); // 如果是文件，则直接输出文件名到指定的文件。
+		}
+		return res;
+	}
+
+	/***
+	 * @author tantian 通过文件路径读取该文件夹下所有的文件的最后编辑时间
+	 */
+	public List<String> getAllFileEditTime(List<String> filePathList) {
+		List<String> res = new ArrayList<String>();
+		int len = filePathList.size();
+		for (int i = 0; i < len; i++) {
+			res.add(getCreateTime(filePathList.get(i))); // 如果是文件，则直接输出文件名到指定的文件。
+		}
+		return res;
+	}
+
+	/***
+	 * @author tantian 通过文件路径读取该文件夹下所有的文件的显示文件名、文件路径、文件显示内容、文件编辑时间
+	 */
+	public List<Map<String,String>> getAllFileInfo(String filePath) {
+		List<Map<String,String>> res = new ArrayList<Map<String,String>>();
+		List<String> allFilePath = getAllFileName(filePath);
+		List<String> allFileShowName = getAllFileShowName(allFilePath);
+		List<String> allFileEditTime = getAllFileEditTime(allFilePath);
+		List<String> allFileShowContent = getAllFileShowContent(filePath);
+
+
+		int len = allFilePath.size();
+		for (int i = 0; i < len; i++) {
+			Map<String,String> blog = new HashMap<String, String>();
+			blog.put("blog_path",allFilePath.get(i));
+			blog.put("blog_name",allFileShowName.get(i));
+			blog.put("blog_edit_time",allFileEditTime.get(i));
+			blog.put("blog_content",allFileShowContent.get(i));
+			res.add(blog);
+		}
+		return res;
 	}
 
 	/***
@@ -125,7 +191,7 @@ public class FileUtils {
 	/***
 	 * @author tantian 通过文件名读取文件内容
 	 */
-	public String readFileBegin(String fileName) throws IOException {
+	public String readFileBegin(String fileName) {
 		FileInputStream in = null;
 		try {
 			in = new FileInputStream(new File(fileName));
@@ -140,21 +206,26 @@ public class FileUtils {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8"));
 			String data = null;
 			Boolean flag = Boolean.TRUE;
-			while ((data = br.readLine()) != null && flag) {
-				char line[] = data.toCharArray();
-				charLength += line.length;
-				if (charLength < BeginCharLength) {
-					res += data;
-					charBeforeLength += line.length;
-				} else if (charLength == BeginCharLength) {
-					res += data;
-					res += "...";
-					return res;
-				} else {
-					res += getStringToIndex(line, BeginCharLength - charBeforeLength);
-					res += "...";
-					return res;
+			try {
+				while ((data = br.readLine()) != null && flag) {
+					char line[] = data.toCharArray();
+					charLength += line.length;
+					if (charLength < BeginCharLength) {
+						res += data;
+						charBeforeLength += line.length;
+					} else if (charLength == BeginCharLength) {
+						res += data;
+						res += "...";
+						return res;
+					} else {
+						res += getStringToIndex(line, BeginCharLength - charBeforeLength);
+						res += "...";
+						return res;
+					}
 				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
