@@ -84,11 +84,10 @@
 								</ul></li>
 
 							<li><a href="work.html">作品</a></li>
-							<li class="active"><a href="http://localhost/ssm/blog.do">博客</a></li>
+							<li class="active"><a href="/ssm/blog.do">博客</a></li>
 						</ul>
 					</div>
 				</div>
-
 			</div>
 		</nav>
 
@@ -136,7 +135,7 @@
 							data_in[i].blog_edit_time+
 							'</span>'+
 							'<h4>'+
-							'	<a href="#">'+data_in[i].blog_name+'</a>'+
+							'	<a href="'+'/ssm/detail.do?blog_name='+data_in[i].blog_name+'">'+data_in[i].blog_name+'</a>'+
 							'</h4>'+
 							'<p>'+data_in[i].blog_content+'</p>'+
 							'<p class="author">'+
@@ -250,13 +249,6 @@
 	<script src="js/main.js"></script>
 
 </body>
-<script>
-	window.onload = function() {
-		/*document.getElementById("time_1").textContent="sdafsdfsdfasddddddddddaa12";
-		document.getElementById("title_1").textContent="sdafsdfsdfdasssssssssssssddddasddddddddddaa12";
-		document.getElementById("content_1").innerText="sdafsdfsdfasddddddddddaa12";*/
-	}
-</script>
 
 </html>
 

@@ -11,4 +11,9 @@ public interface IBlogService {
 	 * @author tantian 读取所有博客文件信息
 	 */
 	public  List<Map<String, String>> getBlogMsg(int begin, int end);
+
+	public String getBlogDetail(String name) ;
+
+	public String getBlogUrl(String name) ;
+
 }

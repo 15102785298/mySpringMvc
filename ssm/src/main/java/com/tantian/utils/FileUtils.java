@@ -28,6 +28,26 @@ public class FileUtils {
 	public static int BeginCharLength = 88;
 
 	/***
+	 * @author tantian 通过文件路径读取该文件夹下所有的文件
+	 */
+	public Map<String, String> getAllFileUrl(String filePath) {
+		Map<String, String> result = new HashMap<String, String>();
+		File[] files = new File(filePath).listFiles();
+		int len = files.length;
+
+		for (int i = 0; i < len; i++) {
+			String tmp = files[i].getAbsolutePath();
+			if (files[i].isDirectory())
+				System.out.println("包含文件夹：\"" + files[i].getAbsolutePath() + "\"请查看！");
+			else {
+				String file_name = files[i].getName();
+				result.put(file_name.substring(0, file_name.lastIndexOf('.')), readFileUrl(files[i]));
+			}
+		}
+		return result;
+	}
+
+	/***
 	 * @author tantian 通过文件路径读取该文件夹下所有文件的文件名
 	 */
 	public List<String> getAllFileName(String filePath) {
@@ -89,24 +109,44 @@ public class FileUtils {
 	/***
 	 * @author tantian 通过文件路径读取该文件夹下所有的文件的显示文件名、文件路径、文件显示内容、文件编辑时间
 	 */
-	public List<Map<String,String>> getAllFileInfo(String filePath) {
-		List<Map<String,String>> res = new ArrayList<Map<String,String>>();
+	public List<Map<String, String>> getAllFileInfo(String filePath) {
+		List<Map<String, String>> res = new ArrayList<Map<String, String>>();
+
 		List<String> allFilePath = getAllFileName(filePath);
 		List<String> allFileShowName = getAllFileShowName(allFilePath);
 		List<String> allFileEditTime = getAllFileEditTime(allFilePath);
 		List<String> allFileShowContent = getAllFileShowContent(filePath);
 
-
 		int len = allFilePath.size();
 		for (int i = 0; i < len; i++) {
-			Map<String,String> blog = new HashMap<String, String>();
-			blog.put("blog_path",allFilePath.get(i));
-			blog.put("blog_name",allFileShowName.get(i));
-			blog.put("blog_edit_time",allFileEditTime.get(i));
-			blog.put("blog_content",allFileShowContent.get(i));
+			Map<String, String> blog = new HashMap<String, String>();
+			blog.put("blog_path", allFilePath.get(i));
+			blog.put("blog_name", allFileShowName.get(i));
+			blog.put("blog_edit_time", allFileEditTime.get(i));
+			blog.put("blog_content", allFileShowContent.get(i));
 			res.add(blog);
 		}
 		return res;
+	}
+
+	/***
+	 * @author tantian 通过文件路径读取该文件夹下所有的文件
+	 */
+	public Map<String, String> getAllFileDetail(String filePath) {
+		Map<String, String> result = new HashMap<String, String>();
+		File[] files = new File(filePath).listFiles();
+		int len = files.length;
+
+		for (int i = 0; i < len; i++) {
+			String tmp = files[i].getAbsolutePath();
+			if (files[i].isDirectory())
+				System.out.println("包含文件夹：\"" + files[i].getAbsolutePath() + "\"请查看！");
+			else {
+				String file_name = files[i].getName();
+				result.put(file_name.substring(0, file_name.lastIndexOf('.')), readFile(files[i])); // 如果是文件，则直接输出文件名到指定的文件。
+			}
+		}
+		return result;
 	}
 
 	/***
@@ -124,7 +164,6 @@ public class FileUtils {
 				result.put(files[i].getAbsolutePath(), readFile(files[i])); // 如果是文件，则直接输出文件名到指定的文件。
 		}
 		return result;
-
 	}
 
 	/***
@@ -172,8 +211,9 @@ public class FileUtils {
 			String data = null;
 			int i = 0;
 			try {
-				while ((data = br.readLine()) != null && i++ < 2)
+				while ((data = br.readLine()) != null)
 					res += (data + "\n");
+				br.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -207,6 +247,7 @@ public class FileUtils {
 			String data = null;
 			Boolean flag = Boolean.TRUE;
 			try {
+				data = br.readLine();
 				while ((data = br.readLine()) != null && flag) {
 					char line[] = data.toCharArray();
 					charLength += line.length;
@@ -223,6 +264,7 @@ public class FileUtils {
 						return res;
 					}
 				}
+				in.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -236,6 +278,38 @@ public class FileUtils {
 		}
 		res += "...";
 		return res;
+	}
+
+	/***
+	 * @author tantian 通过文件读取文件在Zoho上的地址
+	 */
+	public String readFileUrl(File file) {
+		FileInputStream in = null;
+		try {
+			in = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String data = "";
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			try {
+				data = br.readLine();
+				in.close();
+
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return data;
 	}
 
 	private String getStringToIndex(char[] data, int index) {
